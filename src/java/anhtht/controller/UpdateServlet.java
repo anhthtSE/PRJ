@@ -5,8 +5,11 @@
  */
 package anhtht.controller;
 
+import anhtht.registration.RegistrationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,13 +21,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-@WebServlet(name = "DispatcherServlet", urlPatterns = {"/DispatcherServlet"})
-public class DispatcherServlet extends HttpServlet {
-    private final String LOGIN_SERVLET = "LoginServlet";
-    private final String LOGIN_PAGE = "login.html";
-    private final String SEARCH_RESULT_SERVLET = "SearchLastNameServlet";
-    private final String DELETE_SERVLET = "DeleteServlet";
-    private final String UPDATE_SERVLET = "UpdateServlet";
+@WebServlet(name = "UpdateServlet", urlPatterns = {"/UpdateServlet"})
+public class UpdateServlet extends HttpServlet {
+    private final String ERROR_PAGE = "error.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,29 +36,39 @@ public class DispatcherServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        String button = request.getParameter("btAction");
-        String url = LOGIN_PAGE;
+        String username = request.getParameter("txtUsername");
+        String password = request.getParameter("txtPassword");
+        String admin = request.getParameter("chkAdmin");
+        boolean role = false;
+        if (admin != null) {
+            role = true;
+        }
+        String url = ERROR_PAGE;
+        String SearchValue = request.getParameter("lastSearchValue");
         
         try {
-            if (button == null) {
-                
-            } else if (button.equals("Login")) {
-                url = LOGIN_SERVLET;
-            } else if (button.equals("Search")) {
-                url = SEARCH_RESULT_SERVLET;
-            } else if (button.equals("Delete")) {
-                url = DELETE_SERVLET;
-            } else if (button.equals("Update")) {
-                url = UPDATE_SERVLET;
+            //1. Call DAO
+            //1.1 New DAO
+            RegistrationDAO dao = new RegistrationDAO();
+            //1.2 Call method of DAO
+            boolean result = dao.updateAccount(username, password, role);
+           
+            //2. Process result
+            if (result) {
+                url = "DispatcherServlet"
+                        + "?btAction=Search"
+                        + "&txtSearchValue=" + SearchValue;
             }
+        } catch (NamingException e) {
+            e.printStackTrace();
+        } catch (SQLException e){
+            e.printStackTrace();
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
             
-            out.close();
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

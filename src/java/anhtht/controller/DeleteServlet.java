@@ -41,7 +41,7 @@ public class DeleteServlet extends HttpServlet {
         String url = ERROR_PAGE;
         try{
             //1. CALL MODEL-DAO
-            //1.1 new DEO
+            //1.1 new DAO
             RegistrationDAO dao = new RegistrationDAO();
             //1.2 call method of DAO
             boolean result = dao.deteleAccount(username);

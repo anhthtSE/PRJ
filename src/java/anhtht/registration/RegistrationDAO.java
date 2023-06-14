@@ -157,24 +157,26 @@ public class RegistrationDAO implements Serializable{
         throws NamingException, SQLException{
         Connection con = null;
         PreparedStatement stm = null;
+        boolean check = false;
         try{
             //1.Make connection
             con = DBHelper.makeConnection();
             //1.1 Check connect
             if (con != null) {
                 //2. Create SQL String
-                String url = "Update Registration"
-                        + "Password = ?, isAdmin = ? "
-                        + "From Registration = ? ";
+                String url = "Update Registration "
+                        + "Set Password = ?, isAdmin = ? "
+                        + "WHERE Username = ? ";
                 //3. Create statement Obj
                 stm = con.prepareStatement(url);
-                stm.setString(1, username);
-                stm.setString(2, password);
-                stm.setBoolean(3, isRole);
+                stm.setString(1, password);
+                stm.setBoolean(2, isRole);
+                stm.setString(3, username);
+                
                 //4. Execute Query
                 int effectRows = stm.executeUpdate();
                 if (effectRows > 0) {
-                    return true;
+                    check = true;
                 }
             }//end connection is avaible
         } finally{
@@ -185,6 +187,6 @@ public class RegistrationDAO implements Serializable{
                 con.close();
             }
         }
-        return false;
+        return check;
     }
 }
