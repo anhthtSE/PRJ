@@ -37,7 +37,7 @@ public class DeleteServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         String username = request.getParameter("pk");
-        String searchValue = request.getParameter("txtSearchValue");
+        String searchValue = request.getParameter("LastSearchValue");
         String url = ERROR_PAGE;
         try{
             //1. CALL MODEL-DAO
