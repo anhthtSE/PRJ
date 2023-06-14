@@ -52,9 +52,9 @@
                                 int count = 0;
                                 for(RegistrationDTO dto: result){
                                     String urlRewriting = "DispatcherServlet"
-                                            + "?btAction=delete"
-                                            + "&pk =" + dto.getUsername()
-                                            + "&LastSearchValue=" + request.getParameter("txtSearchValue");
+                                            + "?btAction=Delete"
+                                            + "&pk=" + dto.getUsername()
+                                            + "&LastSearchValue=" + searchValue;
                                     //req para còn exist do config para
                                     %>
                                     
