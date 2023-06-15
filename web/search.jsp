@@ -22,7 +22,7 @@
                    String username = newestCookie.getName();
                    %>
                    <font style="color: red">
-                        Welcome, <%= username %> 
+                   Welcome, <%= username %>
                     </font>
         <%
                 }
@@ -31,7 +31,8 @@
         
         <form action="DispatcherServlet">
             Search <input type="text" name="txtSearchValue" value="<%= request.getParameter("txtSearchValue") %>"><br/>
-            <input type="submit" value="Search" name="btAction"/><br/>
+            <input type="submit" value="Search" name="btAction"/>
+            <input type="submit" value="Logout" name="btAction" />
         </form>
         
         <% 

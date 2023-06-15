@@ -5,14 +5,10 @@
  */
 package anhtht.controller;
 
-import anhtht.registration.RegistrationDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,9 +18,9 @@ import javax.servlet.http.HttpSession;
  *
  * @author ASUS
  */
-public class LoginServlet extends HttpServlet {
-    private final String SEARCH_PAGE = "search.html";
-    private final String INVALID_PAGE = "invalid.html";
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
+public class LogoutServlet extends HttpServlet {
+    private final String LOGIN_PAGE = "login.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,47 +33,16 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        
-        String button = request.getParameter("btAction");
-        String url = INVALID_PAGE;
+        String url = LOGIN_PAGE;
         
         try{
-            //check value
-            if (button.equals("Login")) {
-                //đúng button mới lấy được parameter
-                String username = request.getParameter("txtUsername");
-                String password = request.getParameter("txtPassword");
-                
-                //1.call DAO
-                //new DAO & call method of DAO
-                RegistrationDAO dao = new RegistrationDAO();
-                boolean result = dao.checkLogin(username, password);
-                //2.process result
-                if (result) {
-                    url = SEARCH_PAGE;
-//                    <-- Using cookie -->
-                    //Sau  khi login compeled
-                    Cookie cookie = new Cookie(username, password);
-                    //Set cookie time exist
-                    cookie.setMaxAge(60 * 5);
-                    //add cookie into res obj
-                    response.addCookie(cookie);
-
-//                   <-- using session -->
-//                    //Create new session
-//                    HttpSession session = request.getSession(true);
-//                    session.setAttribute("USER", result);
-                }// end user had existed
-            }// end if user clicked Loign
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        } catch(NamingException ex){
-            ex.printStackTrace();
-        }finally{
+            HttpSession session = request.getSession(false);
+            //Check exist session
+            if (session != null) {
+                session.invalidate();
+            }//end if session is not null
+        } finally {
             response.sendRedirect(url);
-            out.close();
         }
     }
 

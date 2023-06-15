@@ -26,6 +26,7 @@ public class DispatcherServlet extends HttpServlet {
     private final String DELETE_SERVLET = "DeleteServlet";
     private final String UPDATE_SERVLET = "UpdateServlet";
     private final String START_UP_CONTROLLER = "StartUpServlet";
+    private final String LOG_OUT_SERVLET = "LogoutServlet";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -54,6 +55,8 @@ public class DispatcherServlet extends HttpServlet {
                 url = DELETE_SERVLET;
             } else if (button.equals("Update")) {
                 url = UPDATE_SERVLET;
+            } else if (button.equals("Logout")) {
+                url = LOG_OUT_SERVLET;
             }
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
