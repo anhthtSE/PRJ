@@ -25,6 +25,7 @@ public class DispatcherServlet extends HttpServlet {
     private final String SEARCH_RESULT_SERVLET = "SearchLastNameServlet";
     private final String DELETE_SERVLET = "DeleteServlet";
     private final String UPDATE_SERVLET = "UpdateServlet";
+    private final String START_UP_CONTROLLER = "StartUpServlet";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -44,7 +45,7 @@ public class DispatcherServlet extends HttpServlet {
         
         try {
             if (button == null) {
-                
+                url = START_UP_CONTROLLER;
             } else if (button.equals("Login")) {
                 url = LOGIN_SERVLET;
             } else if (button.equals("Search")) {

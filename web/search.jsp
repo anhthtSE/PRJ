@@ -14,9 +14,20 @@
         <title>Search</title>
     </head>
     <body>
-        <font style="color: red">
-        Welcome, 
-        </font>
+        <%
+//            Login thành công khi cookie tồn tại
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                   Cookie newestCookie = cookies[cookies.length - 1];
+                   String username = newestCookie.getName();
+                   %>
+                   <font style="color: red">
+                        Welcome, <%= username %> 
+                    </font>
+        <%
+                }
+        %>
+        <h1 style="color: blue">Search Page</h1>
         
         <form action="DispatcherServlet">
             Search <input type="text" name="txtSearchValue" value="<%= request.getParameter("txtSearchValue") %>"><br/>

@@ -21,9 +21,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ASUS
  */
-public class LoginServlet extends HttpServlet {
-    private final String SEARCH_PAGE = "search.html";
-    private final String INVALID_PAGE = "invalid.html";
+@WebServlet(name = "StartUpServlet", urlPatterns = {"/StartUpServlet"})
+public class StartUpServlet extends HttpServlet {
+    private final String LOGIN_PAGE = "login.html";
+    private final String SEARCH_PAGE = "search.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,41 +37,34 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         
+        String url = LOGIN_PAGE;
         
-        String button = request.getParameter("btAction");
-        String url = INVALID_PAGE;
-        
-        try{
-            //check value
-            if (button.equals("Login")) {
-                //đúng button mới lấy được parameter
-                String username = request.getParameter("txtUsername");
-                String password = request.getParameter("txtPassword");
-                
-                //1.call DAO
-                //new DAO & call method of DAO
+        try {
+            //1. Get all cookies
+            Cookie[] cookies = request.getCookies();
+            //2. Check existed cookies
+            if (cookies != null) {
+                //3. Get username and password from cookie
+                //Lấy cookie cuối cùng
+                Cookie newestCookie = cookies[cookies.length -1];
+                String username = newestCookie.getName();
+                String password = newestCookie.getValue();
+                //4. call DAO
                 RegistrationDAO dao = new RegistrationDAO();
+                
                 boolean result = dao.checkLogin(username, password);
-                //2.process result
                 if (result) {
                     url = SEARCH_PAGE;
-                    //Sau  khi login compeled
-                    Cookie cookie = new Cookie(username, password);
-                    //Set cookie time exist
-                    cookie.setMaxAge(60 * 5);
-                    //add cookie into res obj
-                    response.addCookie(cookie);
-                }// end user had existed
-            }// end if user clicked Loign
+                }//end user is authenticated
+            }//Cookies have existed
         } catch (SQLException ex){
             ex.printStackTrace();
-        } catch(NamingException ex){
+        } catch (NamingException ex){
             ex.printStackTrace();
-        }finally{
+        } finally {
+            //dùng redict hoặc req
             response.sendRedirect(url);
-            out.close();
         }
     }
 
