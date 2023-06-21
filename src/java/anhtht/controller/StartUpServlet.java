@@ -51,19 +51,33 @@ public class StartUpServlet extends HttpServlet {
                 String username = newestCookie.getName();
                 String password = newestCookie.getValue();
                 //4. call DAO
-                RegistrationDAO dao = new RegistrationDAO();
-                
+                RegistrationDAO dao = new RegistrationDAO();                
                 boolean result = dao.checkLogin(username, password);
+                
                 if (result) {
                     url = SEARCH_PAGE;
                 }//end user is authenticated
+
+                //Lấy all cookies
+//                for (Cookie cookie : cookies) {
+//                    String username = cookie.getName();
+//                    String password = cookie.getValue();
+//                    
+//                    //Call DAO
+//                    RegistrationDAO dao = new RegistrationDAO();
+//                    boolean result = dao.checkLogin(username, password);
+//                    
+//                    if (result) {
+//                        url = SEARCH_PAGE;
+//                    }//end user is authenticated
+//                }
             }//Cookies have existed
         } catch (SQLException ex){
             ex.printStackTrace();
         } catch (NamingException ex){
             ex.printStackTrace();
         } finally {
-            //dùng redict hoặc req
+            //dùng redict hoặc req dispatcher đều được
             response.sendRedirect(url);
         }
     }

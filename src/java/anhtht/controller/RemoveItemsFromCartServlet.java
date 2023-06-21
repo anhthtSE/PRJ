@@ -5,31 +5,24 @@
  */
 package anhtht.controller;
 
+import anhtht.cart.CartObj;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name = "DispatcherServlet", urlPatterns = {"/DispatcherServlet"})
-public class DispatcherServlet extends HttpServlet {
-    private final String LOGIN_SERVLET = "LoginServlet";
-    private final String LOGIN_PAGE = "login.html";
-    private final String SEARCH_RESULT_SERVLET = "SearchLastNameServlet";
-    private final String DELETE_SERVLET = "DeleteServlet";
-    private final String UPDATE_SERVLET = "UpdateServlet";
-    private final String START_UP_CONTROLLER = "StartUpServlet";
-    private final String LOG_OUT_SERVLET = "LogoutServlet";
-    private final String ADD_TO_CART_SERVLET = "AddItemToCartServlet";
-    private final String VIEW_CART_PAGE = "viewCart.jsp";
-    private final String REMOVE_ITEM_FROM_CART_SERVLET ="RemoveItemsFromCartServlet";
+@WebServlet(name = "RemoveItemsFromCartServlet", urlPatterns = {"/RemoveItemsFromCartServlet"})
+public class RemoveItemsFromCartServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,36 +35,37 @@ public class DispatcherServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        String button = request.getParameter("btAction");
-        String url = LOGIN_PAGE;
-        
-        try {
-            if (button == null) {
-                url = START_UP_CONTROLLER;
-            } else if (button.equals("Login")) {
-                url = LOGIN_SERVLET;
-            } else if (button.equals("Search")) {
-                url = SEARCH_RESULT_SERVLET;
-            } else if (button.equals("Delete")) {
-                url = DELETE_SERVLET;
-            } else if (button.equals("Update")) {
-                url = UPDATE_SERVLET;
-            } else if (button.equals("Logout")) {
-                url = LOG_OUT_SERVLET;
-            } else if (button.equals("Add Book to your Cart")) {
-                url = ADD_TO_CART_SERVLET;
-            } else if (button.equals("View Your Cart")) {
-                url = VIEW_CART_PAGE;
-            } else if (button.equals("Remove Select Items")) {
-                url = REMOVE_ITEM_FROM_CART_SERVLET;
-            }
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        try{
+            //1. Cust gors to his/her cart's place
             
-            out.close();
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                //2. Cust takes his/her cart
+                CartObj cart = (CartObj) session.getAttribute("CART");
+                if (cart != null) {
+                //3. Cust gets items
+                    Map<String, Integer> items = cart.getItems();
+                    if (items != null) {
+                        //4. Remove items from cart
+                        String[] selectedItems = request.getParameterValues("chkItem");
+                        if (selectedItems != null) {
+                            for (String selectedItem : selectedItems) {
+                                cart.removeItemFromCart(selectedItem);
+                            }//end for remove each item
+                            
+                            //giỏ trong tay mình
+                            //update attribute
+                            session.setAttribute("CART", cart);
+                        }//end items must be selected
+                    }//end items have not existed
+                }//end cart has existed
+            }//end session has existed
+        } finally {
+            //5. Call the View cart function again using URL rewriting
+            String urlRewriting = "DispatcherServlet?"
+                    + "btAction=View Your Cart";
+            //SD sendRedict do ko muốn trùm
+            response.sendRedirect(urlRewriting);
         }
     }
 

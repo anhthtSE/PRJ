@@ -5,31 +5,24 @@
  */
 package anhtht.controller;
 
+import anhtht.cart.CartObj;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ASUS
  */
-@WebServlet(name = "DispatcherServlet", urlPatterns = {"/DispatcherServlet"})
-public class DispatcherServlet extends HttpServlet {
-    private final String LOGIN_SERVLET = "LoginServlet";
-    private final String LOGIN_PAGE = "login.html";
-    private final String SEARCH_RESULT_SERVLET = "SearchLastNameServlet";
-    private final String DELETE_SERVLET = "DeleteServlet";
-    private final String UPDATE_SERVLET = "UpdateServlet";
-    private final String START_UP_CONTROLLER = "StartUpServlet";
-    private final String LOG_OUT_SERVLET = "LogoutServlet";
-    private final String ADD_TO_CART_SERVLET = "AddItemToCartServlet";
-    private final String VIEW_CART_PAGE = "viewCart.jsp";
-    private final String REMOVE_ITEM_FROM_CART_SERVLET ="RemoveItemsFromCartServlet";
+@WebServlet(name = "AddItemToCartServlet", urlPatterns = {"/AddItemToCartServlet"})
+public class AddItemToCartServlet extends HttpServlet {
+    private final String SHOPPING_PAGE = "shopping.html";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,36 +35,26 @@ public class DispatcherServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        String button = request.getParameter("btAction");
-        String url = LOGIN_PAGE;
-        
-        try {
-            if (button == null) {
-                url = START_UP_CONTROLLER;
-            } else if (button.equals("Login")) {
-                url = LOGIN_SERVLET;
-            } else if (button.equals("Search")) {
-                url = SEARCH_RESULT_SERVLET;
-            } else if (button.equals("Delete")) {
-                url = DELETE_SERVLET;
-            } else if (button.equals("Update")) {
-                url = UPDATE_SERVLET;
-            } else if (button.equals("Logout")) {
-                url = LOG_OUT_SERVLET;
-            } else if (button.equals("Add Book to your Cart")) {
-                url = ADD_TO_CART_SERVLET;
-            } else if (button.equals("View Your Cart")) {
-                url = VIEW_CART_PAGE;
-            } else if (button.equals("Remove Select Items")) {
-                url = REMOVE_ITEM_FROM_CART_SERVLET;
-            }
-        } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+        String url = SHOPPING_PAGE;
+        try{
+            //1.Cus goes to the cart's place
+            //nơi để giỏ always phải có (dùng true)
+            HttpSession session = request.getSession(true);
+            //2.Cus takes his/her cart
+            CartObj cart = (CartObj) session.getAttribute("CART");
+            if (cart == null) {
+                cart = new CartObj();
+            }//cart has not existed
+            //3.Cus drops item to his/her cart
+            String sku = request.getParameter("ddlBook");
+            cart.addItemToCart(sku);
+            //cart in the client => update cart
+            session.setAttribute("CART", cart);
+            //4.Cus continuely goes to shopping
             
-            out.close();
+        }finally{
+            //ReqDispatcher hoặc Rediect đều đc
+            response.sendRedirect(url);
         }
     }
 

@@ -64,11 +64,6 @@ public class LoginServlet extends HttpServlet {
                     cookie.setMaxAge(60 * 5);
                     //add cookie into res obj
                     response.addCookie(cookie);
-
-//                   <-- using session -->
-//                    //Create new session
-//                    HttpSession session = request.getSession(true);
-//                    session.setAttribute("USER", result);
                 }// end user had existed
             }// end if user clicked Loign
         } catch (SQLException ex){
