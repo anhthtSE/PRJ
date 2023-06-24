@@ -6,6 +6,7 @@
 package anhtht.controller;
 
 import anhtht.registration.RegistrationDAO;
+import anhtht.registration.RegistrationDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -23,7 +24,8 @@ import javax.servlet.http.HttpSession;
  * @author ASUS
  */
 public class LoginServlet extends HttpServlet {
-    private final String SEARCH_PAGE = "search.html";
+//    private final String SEARCH_PAGE = "search.html";
+    private final String SEARCH_PAGE = "search.jsp";
     private final String INVALID_PAGE = "invalid.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,9 +55,10 @@ public class LoginServlet extends HttpServlet {
                 //1.call DAO
                 //new DAO & call method of DAO
                 RegistrationDAO dao = new RegistrationDAO();
-                boolean result = dao.checkLogin(username, password);
+//                boolean result = dao.checkLogin(username, password);
+                RegistrationDTO result = dao.checkLogin(username, password);
                 //2.process result
-                if (result) {
+                if (result != null) {
                     url = SEARCH_PAGE;
 //                    <-- Using cookie -->
                     //Sau  khi login compeled
@@ -64,6 +67,8 @@ public class LoginServlet extends HttpServlet {
                     cookie.setMaxAge(60 * 5);
                     //add cookie into res obj
                     response.addCookie(cookie);
+
+//                    
                 }// end user had existed
             }// end if user clicked Loign
         } catch (SQLException ex){

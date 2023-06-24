@@ -6,6 +6,7 @@
 package anhtht.controller;
 
 import anhtht.registration.RegistrationDAO;
+import anhtht.registration.RegistrationDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -52,10 +54,14 @@ public class StartUpServlet extends HttpServlet {
                 String password = newestCookie.getValue();
                 //4. call DAO
                 RegistrationDAO dao = new RegistrationDAO();                
-                boolean result = dao.checkLogin(username, password);
+//                boolean result = dao.checkLogin(username, password);
+                RegistrationDTO result = dao.checkLogin(username, password);
                 
-                if (result) {
+                if (result != null) {
                     url = SEARCH_PAGE;
+                    
+                    HttpSession session = request.getSession();
+                    session.setAttribute("USER", result);
                 }//end user is authenticated
 
                 //Lấy all cookies

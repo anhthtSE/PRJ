@@ -14,7 +14,18 @@
         <title>Search</title>
     </head>
     <body>
-        <%
+        <font style="color: red">
+        Welcome, ${sessionScope.USER.lastname}
+        </font>
+        <h1 style="color: blue">Search Page</h1>
+        
+        <form action="DispatcherServlet">
+            Search <input type="text" name="txtSearchValue" value="${param.txtSearchValue}"><br/>
+            <input type="submit" value="Search" name="btAction"/>
+            <input type="submit" value="Logout" name="btAction" />
+        </form>
+        
+        <%--<%
 //            Login thành công khi cookie tồn tại
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
@@ -27,7 +38,7 @@
         <%          
                 }
         %>
-        <h1 style="color: blue">Search Page</h1>
+        
         
         <form action="DispatcherServlet">
             Search <input type="text" name="txtSearchValue" value="<%= request.getParameter("txtSearchValue") %>"><br/>
@@ -127,6 +138,6 @@
             }// end page is called invalid
             
             
-        %>
+        %>--%>
     </body>
 </html>

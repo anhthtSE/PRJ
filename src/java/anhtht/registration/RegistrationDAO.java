@@ -20,19 +20,21 @@ import javax.naming.NamingException;
  * @author ASUS
  */
 public class RegistrationDAO implements Serializable{
-    public boolean checkLogin(String username, String password)
+//    public boolean checkLogin(String username, String password)
+//        throws SQLException, /*ClassNotFoundException*/NamingException{
+    public RegistrationDTO checkLogin(String username, String password)
         throws SQLException, /*ClassNotFoundException*/NamingException{
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        boolean result = false;
-        
+//        boolean result = false;
+        RegistrationDTO result = null;
         try{
             //1. Make connection
             con = DBHelper.makeConnection();
             if (con != null) {
                 //2. Create SQL String
-                String sql = "Select Username "
+                String sql = "Select Lastname, isAdmin "
                         + "From Registration "
                         + "Where Username = ? "
                         + "And Password = ?";
@@ -44,7 +46,14 @@ public class RegistrationDAO implements Serializable{
                 rs = stm.executeQuery();
                 //5. Process Result
                 if (rs.next()) {
-                    result = true;
+//                    result = true;
+//                   map
+                    result = new RegistrationDTO();
+//                    get date from resionset
+                    String fullname = rs.getString("Lastname");
+                    boolean role = rs.getBoolean("isAdmin");
+                    
+                    result = new RegistrationDTO(username, null, fullname, role);
                 }//end rs had got only one row
             }//end connection is available
             
