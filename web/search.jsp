@@ -4,9 +4,11 @@
     Author     : ASUS
 --%>
 
-<%@page import="anhtht.registration.RegistrationDTO"%>
-<%@page import="java.util.List"%>
+<%--<%@page import="anhtht.registration.RegistrationDTO"%>
+<%@page import="java.util.List"%>--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,7 +26,72 @@
             <input type="submit" value="Search" name="btAction"/>
             <input type="submit" value="Logout" name="btAction" />
         </form>
-        
+         <br/>
+         
+         <c:set var="searchValue" value="${param.txtSearchValue}"/>                      
+         <c:if test="${not empty searchValue}">
+             <c:set var="result" value="${requestScope.SEARCH_RESULT}"/>
+             <c:if test="${not empty result}">
+                 <table border="1">
+                     <thead>
+                         <tr>
+                             <th>No.</th>
+                             <th>Username</th>
+                             <th>Password</th>
+                             <th>Fullname</th>
+                             <th>Role</th>
+                             <th>Delete</th>
+                             <th>Update</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                     <form action="DispatcherServlet" method="POST">
+                         <c:forEach var="dto" items="${result}" varStatus="counter">
+                             <tr>
+                                <td>
+                                    ${counter.count}
+                                 .</td>
+                                <td>
+                                    ${dto.username}
+                                    <input type="hidden" name="txtUsername" value="" />
+                                </td>
+                                <td>
+                                    ${dto.password}
+                                    <input type="hidden" name="txtPassword" value="" />
+                                </td>
+                                <td>
+                                    ${dto.lastname}
+                                </td>
+                                <td>
+                                    <input type="checkbox" name="chkAdmin" value="ON" 
+                                           <c:if test="${dto.role}">
+                                               checked="checked"
+                                           </c:if>
+                                           />
+                                </td>
+                                <td>
+                                    <c:url var="deleteLink" value="DispatcherServlet">
+                                        <c:param name="btAction" value="Delete"/>
+                                        <c:param name="pk" value="${dto.username}"/>
+                                        <c:param name="LastSearchValue" value="${searchValue}"/>
+                                    </c:url>
+                                    <a href="${deleteLink}">Delete</a>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="lastSearchValue" value="${searchValue}" />
+                                    <input type="submit" value="Update" name="btAction" />
+                                </td>
+                            </tr>
+                         </c:forEach>                                                  
+                     </form>                            
+                     </tbody>
+                 </table>
+
+             </c:if>
+             <c:if test="${empty result}">
+                 <h2>No record is matched!!!</h2>
+             </c:if>
+         </c:if>
         <%--<%
 //            Login thành công khi cookie tồn tại
             Cookie[] cookies = request.getCookies();

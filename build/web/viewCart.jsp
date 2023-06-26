@@ -4,6 +4,7 @@
     Author     : ASUS
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.Map"%>
 <%@page import="anhtht.cart.CartObj"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,6 +16,7 @@
     </head>
     <body>
         <h1>Java Book Store</h1>
+        
         <%
             //1. Cust goes his/her cart place
             //session là 1 .. obj
@@ -60,7 +62,7 @@
                                         </tr>
                                         <%                                                                                                                        
                                     }//end traverse items
-                                    %>
+                                    %>        
                                         <tr>
                                             <!--ngoài form-->
                                             <td colspan="3">

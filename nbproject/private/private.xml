@@ -3,8 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Subject/PRJ/Project/PRJ301TrungAnh/src/java/anhtht/cart/CartObj.java</file>
             <file>file:/C:/Subject/PRJ/Project/PRJ301TrungAnh/src/java/anhtht/controller/LoginServlet.java</file>
+            <file>file:/C:/Subject/PRJ/Project/PRJ301TrungAnh/web/search.jsp</file>
             <file>file:/C:/Subject/PRJ/Project/PRJ301TrungAnh/src/java/anhtht/controller/DispatcherServlet.java</file>
+            <file>file:/C:/Subject/PRJ/Project/PRJ301TrungAnh/web/viewCart.jsp</file>
+            <file>file:/C:/Subject/PRJ/Project/PRJ301TrungAnh/src/java/anhtht/controller/AddItemToCartServlet.java</file>
+            <file>file:/C:/Subject/PRJ/Project/PRJ301TrungAnh/web/shopping.html</file>
         </group>
     </open-files>
 </project-private>
