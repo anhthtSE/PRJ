@@ -4,7 +4,7 @@
     Author     : ASUS
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.util.Map"%>
 <%@page import="anhtht.cart.CartObj"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,7 +17,66 @@
     <body>
         <h1>Java Book Store</h1>
         
-        <%
+        <c:if test="${not empty sessionScope}">                        
+            <c:set var="cart" value="${sessionScope.CART}"/>
+            <c:if test="${not empty cart}">
+                <c:set var="item" value="${cart.items}"/>
+                <c:if test="${not empty item}">
+                    <h1>Your cart include</h1>
+                    
+                    <form action="DispatcherServlet" method="POST">
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Name</th>
+                                    <th>Quantity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>                        
+                                <c:forEach var="dto" items="${item}" varStatus="counter">
+                                    <tr>
+                                        <td>
+                                            ${counter.count}
+                                        </td>
+                                        <td>
+                                            ${dto.key}
+                                        </td>
+                                        <td>
+                                            ${dto.value}
+                                        </td>
+                                        <td>
+                                            <input type="checkbox" name="chkItem" value="${dto.key}" />
+                                        </td>
+                                    </tr>
+
+                                </c:forEach>                        
+                                    <tr>
+                                        <td colspan="3">
+                                            <a href="shopping.html">Add More Items to your Cart</a>
+                                        </td>
+                                        <td>
+                                            
+                                            <input type="submit" value="Remove Select Items" name="btAction" />
+                                        </td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </c:if>
+                <c:if test="${empty item}">
+                    <h1>Not item inside cart</h1>
+                </c:if>
+            </c:if>
+            
+            
+        </c:if><%--check exist session--%>
+        <c:if test="${empty sessionScope}">
+            <h2>Not session</h2>
+        </c:if><%--check not exist session%>
+        
+<%--        <%
             //1. Cust goes his/her cart place
             //session là 1 .. obj
             if (session != null) {
@@ -85,6 +144,6 @@
                 }//end cart has existed
                     else{%>Not item into cart<%}
             }//end session has existed
-        %>
+        %>--%>
     </body>
 </html>
