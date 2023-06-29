@@ -65,9 +65,10 @@
                         </table>
                     </form>
                 </c:if>
+                    
                 <c:if test="${empty item}">
                     <h1>Not item inside cart</h1>
-                </c:if>
+                </c:if><%--check out exist items--%>
             </c:if>
             
             

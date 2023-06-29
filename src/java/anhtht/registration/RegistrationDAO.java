@@ -198,4 +198,45 @@ public class RegistrationDAO implements Serializable{
         }
         return check;
     }
+    
+    public boolean createAccount(RegistrationDTO account) 
+            throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            //1. Make connect
+            con = DBHelper.makeConnection();
+            //1.1 Check connection
+            if (con!= null) {
+                //2. Create SQL String
+                String url = "Insert "
+                        + "Into Registration ("
+                        + "username, password, lastname, admin"
+                        + ") Values("
+                        + "?, ?, ?, ?"
+                        + ")";
+                //3.Create statement Obj
+                stm = con.prepareStatement(url);
+                stm.setString(1, account.getUsername());
+                stm.setString(2, account.getPassword());
+                stm.setString(3, account.getLastname());
+                stm.setBoolean(4, account.isRole());
+                //4. Exexcute Query
+                int effectRows = stm.executeUpdate();
+                //5. Process Result
+                if (effectRows > 0) {
+                    return true;
+                }
+            }//end connection is available
+            
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con!= null) {
+                con.close();
+            }
+        }
+        return false;
+    }
 }

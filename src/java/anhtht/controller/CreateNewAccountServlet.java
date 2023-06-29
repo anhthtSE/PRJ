@@ -7,8 +7,12 @@ package anhtht.controller;
 
 import anhtht.registration.RegistrationCreateError;
 import anhtht.registration.RegistrationDAO;
+import anhtht.registration.RegistrationDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import javax.naming.NamingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +25,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "CreateNewAccountServlet", urlPatterns = {"/CreateNewAccountServlet"})
 public class CreateNewAccountServlet extends HttpServlet {
-    private final String CREATE_NEW_ACCOUNT_PAGE = "";
+    private final String LOGIN_PAGE = "login.html";
+    private final String ERROR_PAGE = "createNewAccount.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,6 +45,7 @@ public class CreateNewAccountServlet extends HttpServlet {
         String confirm = request.getParameter("txtConfirm");
         String fullName = request.getParameter("txtFullName");
         
+        String url = ERROR_PAGE;
         boolean foundErr = false;
         RegistrationCreateError errors = new RegistrationCreateError();
         try {
@@ -48,7 +54,8 @@ public class CreateNewAccountServlet extends HttpServlet {
                     username.trim().length() > 20) {
                 foundErr = true;
                 errors.setUsernameLengthError("Username is required input from 6 to 20 characters");
-            }
+            } 
+            
             if (password.trim().length() <6 ||
                     password.trim().length() > 30) {
                 foundErr = true;
@@ -60,20 +67,35 @@ public class CreateNewAccountServlet extends HttpServlet {
             if (fullName.trim().length() < 2 ||
                     fullName.trim().length() > 50) {
                 foundErr = true;
-                errors.setUsernameLengthError("Fullname is required input from 2 to 50 characters");
+                errors.setFullNameLengthError("Fullname is required input from 2 to 50 characters");
             }
             if (foundErr) {
                 request.setAttribute("CREATE_ERRORS", errors);
             } else {
                 //2. Call DAO
                 RegistrationDAO dao = new RegistrationDAO();
+                RegistrationDTO account = new RegistrationDTO(username, password, fullName, false);
+                boolean result = dao.createAccount(account);
                 //3. Process Result
-                
+                if (result) {
+                    url = LOGIN_PAGE;
+                }
             }//end errors is not ocurred
             
             
-        } finally {
-            
+        } catch (SQLException ex) {
+            String msg = ex.getMessage();
+            log("CreateAccountServlet _ SQL "+ msg);
+            if (msg.contains("duplicate")) {
+                errors.setUsernameIsExised(username + "is existed !!!");
+                request.setAttribute("CREATE_ERRORS", errors);
+            }//username is existed
+        } catch (NamingException ex){
+            log("CreateAccountServlet _ Naming" + ex.getMessage());
+        }
+        finally {
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 

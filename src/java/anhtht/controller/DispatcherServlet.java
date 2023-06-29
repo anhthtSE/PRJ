@@ -5,9 +5,12 @@
  */
 package anhtht.controller;
 
+import anhtht.util.MyAppConstants;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Properties;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,12 +24,15 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "DispatcherServlet", urlPatterns = {"/DispatcherServlet"})
 public class DispatcherServlet extends HttpServlet {
     //PAGE
-    private final String LOGIN_PAGE = "login.html";
+//    private final String LOGIN_PAGE = "login.html";
+//    private final String LOGIN_PAGE = " ";
     //JSP PAGE
     private final String VIEW_CART_PAGE = "viewCart.jsp";
     //CONTROLLER
-    private final String LOGIN_SERVLET = "LoginServlet";
-    private final String SEARCH_RESULT_SERVLET = "SearchLastNameServlet";
+//    private final String LOGIN_SERVLET = "LoginServlet";
+//    private final String LOGIN_SERVLET = "loginController";
+//    private final String SEARCH_RESULT_SERVLET = "SearchLastNameServlet";
+//    private final String SEARCH_RESULT_SERVLET = "searchController";
     private final String DELETE_SERVLET = "DeleteServlet";
     private final String UPDATE_SERVLET = "UpdateServlet";
     private final String START_UP_CONTROLLER = "StartUpServlet";
@@ -50,15 +56,20 @@ public class DispatcherServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         String button = request.getParameter("btAction");
-        String url = LOGIN_PAGE;
+        //1. Get context scope
+        ServletContext context = this.getServletContext();
+        //2. Get SITEMAPS
+        Properties siteMaps =(Properties) context.getAttribute("SITEMAPS");
         
+//        String url = LOGIN_PAGE;
+        String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.LOGIN_PAGE);
         try {
             if (button == null) {
                 url = START_UP_CONTROLLER;
             } else if (button.equals("Login")) {
-                url = LOGIN_SERVLET;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.LOGIN_SERVLET);
             } else if (button.equals("Search")) {
-                url = SEARCH_RESULT_SERVLET;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.SEARCH_RESULT_SERVLET);
             } else if (button.equals("Delete")) {
                 url = DELETE_SERVLET;
             } else if (button.equals("Update")) {

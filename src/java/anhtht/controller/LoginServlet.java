@@ -7,10 +7,13 @@ package anhtht.controller;
 
 import anhtht.registration.RegistrationDAO;
 import anhtht.registration.RegistrationDTO;
+import anhtht.util.MyAppConstants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -24,10 +27,12 @@ import javax.servlet.http.HttpSession;
  * @author ASUS
  */
 public class LoginServlet extends HttpServlet {
-    private final String SEARCH_PAGE = "search.html";
+//    private final String SEARCH_PAGE = "search.html";
 //    private final String SEARCH_PAGE = "search.jsp";
-    private final String INVALID_PAGE = "invalid.html";
-    /**
+//    private final String SEARCH_PAGE = "searchPage";
+//    private final String INVALID_PAGE = "invalid.html";
+//    private final String INVALID_PAGE = "invalidPage";
+    /*
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -40,10 +45,13 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        
+        //1. Get context scope
+        ServletContext context = this.getServletContext();
+        //2. Get SITEMAPS
+        Properties siteMaps =(Properties) context.getAttribute("SITEMAPS");
         
         String button = request.getParameter("btAction");
-        String url = INVALID_PAGE;
+        String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.INVALID_PAGE);
         
         try{
             //check value
@@ -59,16 +67,16 @@ public class LoginServlet extends HttpServlet {
                 RegistrationDTO result = dao.checkLogin(username, password);
                 //2.process result
                 if (result != null) {
-                    url = SEARCH_PAGE;
+                    url = siteMaps.getProperty(MyAppConstants.DispatchFeature.SEARCH_PAGE);
 //                    <-- Using cookie -->
-                    //Sau  khi login compeled
-                    Cookie cookie = new Cookie(username, password);
-                    //Set cookie time exist
-                    cookie.setMaxAge(60 * 5);
-                    //add cookie into res obj
-                    response.addCookie(cookie);
-
-//                    
+//                    //Sau  khi login compeled
+//                    Cookie cookie = new Cookie(username, password);
+//                    //Set cookie time exist
+//                    cookie.setMaxAge(60 * 5);
+//                    //add cookie into res obj
+//                    response.addCookie(cookie);
+                   HttpSession session = request.getSession();
+                   session.setAttribute("USER", result);
                 }// end user had existed
             }// end if user clicked Loign
         } catch (SQLException ex){
