@@ -19,36 +19,37 @@
             Username* <input type="text" name="txtUsername" 
                              value="${param.txtUsername}" /> (6 - 20 chars)<br/>
             <c:if test="${not empty errors.usernameLengthError}">
-                <font>
+                <font style="color: red">
                     ${errors.usernameLengthError}
                 </font><br/>
             </c:if>
-            <c:if test="${not empty errors.usernameIsExisted}">
-                <font>
-                    ${errors.usernameIsExisted}
+            <c:if test="${not empty errors.usernameIsExised}">
+                <font style="color: red">
+                    ${errors.usernameIsExised}
                 </font><br/>
             </c:if>
-            Password* <input type="password" name="txtPassword" value="" /> (6 - 30 chars)<br/>
+                Password* <input type="password" name="txtPassword" value="${param.txtPassword}" /> (6 - 30 chars)<br/>
             <c:if test="${not empty errors.passwordLengthError}">
-                <font>
+                <font style="color: red">
                     ${errors.passwordLengthError}
                 </font><br/>
             </c:if>
-            Confirm* <input type="password" name="txtConfirm" value="" />
+                Confirm* <input type="password" name="txtConfirm" value="${param.txtConfirm}" /><br/>
             <c:if test="${not empty errors.confirmNotMatched}">
-                <font>
+                <font style="color: red">
                     ${errors.confirmNotMatched}
                 </font><br/>
             </c:if>
             FullName* <input type="text" name="txtFullName" 
                             value="${param.txtFullname}" /> (2 - 50 chars)<br/>
             <c:if test="${not empty errors.fullNameLengthError}">
-                <font>
+                <font style="color: red">
                     ${errors.fullNameLengthError}
                 </font><br/>
             </c:if>
-            <input type="submit" value="Create New Account" />
+            <input type="submit" value="Create New Account" name="btAction" />
             <input type="reset" value="Reset" />
         </form>
+                        
     </body>
 </html>

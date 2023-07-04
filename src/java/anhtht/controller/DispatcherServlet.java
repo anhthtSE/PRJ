@@ -27,20 +27,20 @@ public class DispatcherServlet extends HttpServlet {
 //    private final String LOGIN_PAGE = "login.html";
 //    private final String LOGIN_PAGE = " ";
     //JSP PAGE
-    private final String VIEW_CART_PAGE = "viewCart.jsp";
-    //CONTROLLER
-//    private final String LOGIN_SERVLET = "LoginServlet";
-//    private final String LOGIN_SERVLET = "loginController";
-//    private final String SEARCH_RESULT_SERVLET = "SearchLastNameServlet";
-//    private final String SEARCH_RESULT_SERVLET = "searchController";
-    private final String DELETE_SERVLET = "DeleteServlet";
-    private final String UPDATE_SERVLET = "UpdateServlet";
-    private final String START_UP_CONTROLLER = "StartUpServlet";
-    private final String LOG_OUT_SERVLET = "LogoutServlet";
-    private final String ADD_TO_CART_SERVLET = "AddItemToCartServlet";
-    private final String REMOVE_ITEM_FROM_CART_SERVLET ="RemoveItemsFromCartServlet";
-    private final String CREATE_NEW_ACCOUNT_SERVLET = "CreateNewAccountServlet";
-    private final String SEARCH_ITEMS_PRODUCT_SERVLET = "SearchItemProductServlet";
+//    private final String VIEW_CART_PAGE = "viewCart.jsp";
+//    //CONTROLLER
+////    private final String LOGIN_SERVLET = "LoginServlet";
+////    private final String LOGIN_SERVLET = "loginController";
+////    private final String SEARCH_RESULT_SERVLET = "SearchLastNameServlet";
+////    private final String SEARCH_RESULT_SERVLET = "searchController";
+//    private final String DELETE_SERVLET = "DeleteServlet";
+//    private final String UPDATE_SERVLET = "UpdateServlet";
+//    private final String START_UP_CONTROLLER = "StartUpServlet";
+//    private final String LOG_OUT_SERVLET = "LogoutServlet";
+//    private final String ADD_TO_CART_SERVLET = "AddItemToCartServlet";
+//    private final String REMOVE_ITEM_FROM_CART_SERVLET ="RemoveItemsFromCartServlet";
+//    private final String CREATE_NEW_ACCOUNT_SERVLET = "CreateNewAccountServlet";
+//    private final String SEARCH_ITEMS_PRODUCT_SERVLET = "SearchItemProductServlet";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -65,27 +65,25 @@ public class DispatcherServlet extends HttpServlet {
         String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.LOGIN_PAGE);
         try {
             if (button == null) {
-                url = START_UP_CONTROLLER;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.START_UP_SERVLET);
             } else if (button.equals("Login")) {
                 url = siteMaps.getProperty(MyAppConstants.DispatchFeature.LOGIN_SERVLET);
             } else if (button.equals("Search")) {
                 url = siteMaps.getProperty(MyAppConstants.DispatchFeature.SEARCH_RESULT_SERVLET);
             } else if (button.equals("Delete")) {
-                url = DELETE_SERVLET;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.DETELET_SERVLET);
             } else if (button.equals("Update")) {
-                url = UPDATE_SERVLET;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.UPDATE_SERVLET);
             } else if (button.equals("Logout")) {
-                url = LOG_OUT_SERVLET;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.LOGOUT_SERVLET);
             } else if (button.equals("Add Book to your Cart")) {
-                url = ADD_TO_CART_SERVLET;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.ADD_ITEM_TO_CART_SERVLET);
             } else if (button.equals("View Your Cart")) {
-                url = VIEW_CART_PAGE;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.VIEW_CART_CONTROL);
             } else if (button.equals("Remove Select Items")) {
-                url = REMOVE_ITEM_FROM_CART_SERVLET;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.REMOVE_ITEM_FROM_CART_SERVLET);
             } else if (button.equals("Create New Account")) {
-                url = CREATE_NEW_ACCOUNT_SERVLET;
-            } else if (button.equals("Search Product")) {
-                url = SEARCH_ITEMS_PRODUCT_SERVLET;
+                url = siteMaps.getProperty(MyAppConstants.DispatchFeature.CREATE_NEW_ACCOUNT_SERVLET);
             }
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

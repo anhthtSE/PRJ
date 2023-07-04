@@ -211,7 +211,7 @@ public class RegistrationDAO implements Serializable{
                 //2. Create SQL String
                 String url = "Insert "
                         + "Into Registration ("
-                        + "username, password, lastname, admin"
+                        + "Username, Password, Lastname, isAdmin"
                         + ") Values("
                         + "?, ?, ?, ?"
                         + ")";

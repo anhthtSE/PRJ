@@ -5,8 +5,11 @@
  */
 package anhtht.controller;
 
+import anhtht.util.MyAppConstants;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Properties;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "LogoutServlet", urlPatterns = {"/LogoutServlet"})
 public class LogoutServlet extends HttpServlet {
-    private final String LOGIN_PAGE = "login.html";
+//    private final String LOGIN_PAGE = "login.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,7 +36,11 @@ public class LogoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = LOGIN_PAGE;
+        //1. Get context scope
+        ServletContext context = this.getServletContext();
+        //2. Get SITEMAPS
+        Properties siteMaps =(Properties) context.getAttribute("SITEMAPS");
+        String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.LOGIN_PAGE);
         
         try{
             HttpSession session = request.getSession(false);

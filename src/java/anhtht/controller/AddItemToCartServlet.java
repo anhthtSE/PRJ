@@ -6,8 +6,11 @@
 package anhtht.controller;
 
 import anhtht.cart.CartObj;
+import anhtht.util.MyAppConstants;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Properties;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,7 +24,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "AddItemToCartServlet", urlPatterns = {"/AddItemToCartServlet"})
 public class AddItemToCartServlet extends HttpServlet {
-    private final String SHOPPING_PAGE = "shopping.html";
+//    private final String SHOPPING_PAGE = "shopping.html";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,7 +38,12 @@ public class AddItemToCartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = SHOPPING_PAGE;
+        
+        //1. Get context scope
+        ServletContext context = this.getServletContext();
+        //2. Get SITEMAPS
+        Properties siteMaps =(Properties) context.getAttribute("SITEMAPS");
+        String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.SHOPPING_PAGE);
         try{
             //1.Cus goes to the cart's place
             //nơi để giỏ always phải có (dùng true)

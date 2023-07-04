@@ -80,9 +80,9 @@ public class LoginServlet extends HttpServlet {
                 }// end user had existed
             }// end if user clicked Loign
         } catch (SQLException ex){
-            ex.printStackTrace();
+            log("LoginServlet _ SQL " + ex.getMessage());
         } catch(NamingException ex){
-            ex.printStackTrace();
+            log("LoginServlet _ Naming " + ex.getMessage());
         }finally{
             response.sendRedirect(url);
             out.close();

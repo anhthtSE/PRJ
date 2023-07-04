@@ -6,10 +6,13 @@
 package anhtht.controller;
 
 import anhtht.registration.RegistrationDAO;
+import anhtht.util.MyAppConstants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "DeleteServlet", urlPatterns = {"/DeleteServlet"})
 public class DeleteServlet extends HttpServlet {
-    private final String ERROR_PAGE = "error.html";
+//    private final String ERROR_PAGE = "error.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,7 +41,12 @@ public class DeleteServlet extends HttpServlet {
         
         String username = request.getParameter("pk");
         String searchValue = request.getParameter("LastSearchValue");
-        String url = ERROR_PAGE;
+        
+        //1. Get context scope
+        ServletContext context = this.getServletContext();
+        //2. Get SITEMAPS
+        Properties siteMaps =(Properties) context.getAttribute("SITEMAPS");
+        String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.ERROR_PAGE);
         try{
             //1. CALL MODEL-DAO
             //1.1 new DAO
@@ -54,9 +62,10 @@ public class DeleteServlet extends HttpServlet {
                 //2.2 call the error if delete action is fail    
             }//end delete í success
         } catch (SQLException ex){
-            ex.printStackTrace();
+            log("DeleteServlet _ SQL" + ex.getMessage());
         } catch (NamingException ex){
-            ex.printStackTrace();
+//            ex.printStackTrace();
+            log("DeleteServlet _ Naming" + ex.getMessage());
         }finally {
 //            sợ para duplicate
             response.sendRedirect(url);

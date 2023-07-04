@@ -8,11 +8,14 @@ package anhtht.controller;
 import anhtht.registration.RegistrationCreateError;
 import anhtht.registration.RegistrationDAO;
 import anhtht.registration.RegistrationDTO;
+import anhtht.util.MyAppConstants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -45,43 +48,49 @@ public class CreateNewAccountServlet extends HttpServlet {
         String confirm = request.getParameter("txtConfirm");
         String fullName = request.getParameter("txtFullName");
         
-        String url = ERROR_PAGE;
+        //1. Get context scope
+        ServletContext context = this.getServletContext();
+        //2. Get SITEMAPS
+        Properties siteMaps =(Properties) context.getAttribute("SITEMAPS");
+        
+        String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.CREATE_NEW_ACCOUNT_CONTROL);
         boolean foundErr = false;
         RegistrationCreateError errors = new RegistrationCreateError();
+        RegistrationDTO account = new RegistrationDTO();
         try {
             //1. Check all user's contrainsts
-            if (username.trim().length() <6 ||
-                    username.trim().length() > 20) {
+            if (username.trim().length() < 6 || username.trim().length() > 20) {
                 foundErr = true;
                 errors.setUsernameLengthError("Username is required input from 6 to 20 characters");
-            } 
-            
-            if (password.trim().length() <6 ||
-                    password.trim().length() > 30) {
+            }
+//            if (username.trim().equals(account.getUsername())) {
+//                foundErr = true;
+//                
+//            }
+            if (password.trim().length() <= 6 || password.trim().length() > 30) {
                 foundErr = true;
                 errors.setPasswordLengthError("Password is required input from 6 to 30 characters");
-            } else if (!confirm.trim().equals(password.trim())) {
+            } 
+            if (!confirm.trim().equals(password.trim())) {
                 foundErr = true;
-                errors.setConfirmNotMatched("Confirm must match Password");
+                errors.setConfirmNotMatched("Confirm must match password");
             }
-            if (fullName.trim().length() < 2 ||
-                    fullName.trim().length() > 50) {
+            if (fullName.trim().length() < 2 || fullName.trim().length() > 50) {
                 foundErr = true;
                 errors.setFullNameLengthError("Fullname is required input from 2 to 50 characters");
             }
-            if (foundErr) {
+            if (foundErr){
                 request.setAttribute("CREATE_ERRORS", errors);
             } else {
                 //2. Call DAO
                 RegistrationDAO dao = new RegistrationDAO();
-                RegistrationDTO account = new RegistrationDTO(username, password, fullName, false);
+                account = new RegistrationDTO(username, password, fullName, false);
                 boolean result = dao.createAccount(account);
-                //3. Process Result
+                //3. Process result
                 if (result) {
-                    url = LOGIN_PAGE;
+                    url = siteMaps.getProperty(MyAppConstants.DispatchFeature.LOGIN_PAGE);
                 }
-            }//end errors is not ocurred
-            
+            }//end errors is not ocurred 
             
         } catch (SQLException ex) {
             String msg = ex.getMessage();
@@ -90,6 +99,7 @@ public class CreateNewAccountServlet extends HttpServlet {
                 errors.setUsernameIsExised(username + "is existed !!!");
                 request.setAttribute("CREATE_ERRORS", errors);
             }//username is existed
+//            log("CreateAccountServlet _ SQLException" + ex.getMessage());
         } catch (NamingException ex){
             log("CreateAccountServlet _ Naming" + ex.getMessage());
         }

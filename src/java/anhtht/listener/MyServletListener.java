@@ -31,7 +31,7 @@ public class MyServletListener implements ServletContextListener {
         InputStream is = null;
         try{
             siteMaps = new Properties();
-            context.getResourceAsStream(siteMapsPath);
+            is = context.getResourceAsStream(siteMapsPath);
             siteMaps.load(is);
         context.setAttribute("SITEMAPS", siteMaps);
         } catch (IOException ex){

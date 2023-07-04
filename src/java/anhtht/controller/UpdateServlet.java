@@ -6,11 +6,14 @@
 package anhtht.controller;
 
 import anhtht.registration.RegistrationDAO;
+import anhtht.util.MyAppConstants;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Properties;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +46,12 @@ public class UpdateServlet extends HttpServlet {
         if (admin != null) {
             role = true;
         }
-        String url = ERROR_PAGE;
+        
+        //1. Get context scope
+        ServletContext context = this.getServletContext();
+        //2. Get SITEMAPS
+        Properties siteMaps =(Properties) context.getAttribute("SITEMAPS");
+        String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.ERROR_PAGE);
         String SearchValue = request.getParameter("lastSearchValue");
         
         try {
@@ -60,9 +68,10 @@ public class UpdateServlet extends HttpServlet {
                         + "&txtSearchValue=" + SearchValue;
             }
         } catch (NamingException e) {
-            e.printStackTrace();
+            log("UpdateServlet _ SQL " + e.getMessage());
         } catch (SQLException e){
-            e.printStackTrace();
+//            e.printStackTrace();
+            log("UpdateServlet _ Naming " + e.getMessage());
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
