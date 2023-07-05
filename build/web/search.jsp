@@ -45,8 +45,8 @@
                          </tr>
                      </thead>
                      <tbody>
-                     <form action="DispatcherServlet" method="GET">
-                         <c:forEach var="dto" items="${result}" varStatus="counter">
+                        <c:forEach var="dto" items="${result}" varStatus="counter">
+                        <form action="DispatcherServlet" method="GET">
                              <tr>
                                 <td>
                                     ${counter.count}
@@ -80,8 +80,8 @@
                                     <input type="submit" value="Update" name="btAction" />
                                 </td>
                             </tr>
-                         </c:forEach>                                                  
-                     </form>                            
+                        </form>                            
+                        </c:forEach>                                                  
                      </tbody>
                  </table>
 
