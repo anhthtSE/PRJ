@@ -45,7 +45,7 @@
                          </tr>
                      </thead>
                      <tbody>
-                     <form action="DispatcherServlet" method="POST">
+                     <form action="DispatcherServlet" method="GET">
                          <c:forEach var="dto" items="${result}" varStatus="counter">
                              <tr>
                                 <td>
@@ -53,11 +53,10 @@
                                  .</td>
                                 <td>
                                     ${dto.username}
-                                    <input type="hidden" name="txtUsername" value="" />
+                                    <input type="hidden" name="txtUsername" value="${dto.username}" />
                                 </td>
                                 <td>
-                                    ${dto.password}
-                                    <input type="hidden" name="txtPassword" value="" />
+                                    <input type="text" name="txtPassword" value="${dto.password}" />
                                 </td>
                                 <td>
                                     ${dto.lastname}
@@ -66,8 +65,7 @@
                                     <input type="checkbox" name="chkAdmin" value="ON" 
                                            <c:if test="${dto.role}">
                                                checked="checked"
-                                           </c:if>
-                                           />
+                                           </c:if>/>
                                 </td>
                                 <td>
                                     <c:url var="deleteLink" value="DispatcherServlet">

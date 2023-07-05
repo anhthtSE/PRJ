@@ -67,16 +67,17 @@ public class LoginServlet extends HttpServlet {
                 RegistrationDTO result = dao.checkLogin(username, password);
                 //2.process result
                 if (result != null) {
-                    url = siteMaps.getProperty(MyAppConstants.DispatchFeature.SEARCH_PAGE);
+                    url = siteMaps.getProperty(MyAppConstants.DispatchFeature.SEARCH_PAGE_CONTROL);
 //                    <-- Using cookie -->
-//                    //Sau  khi login compeled
-//                    Cookie cookie = new Cookie(username, password);
-//                    //Set cookie time exist
-//                    cookie.setMaxAge(60 * 5);
-//                    //add cookie into res obj
-//                    response.addCookie(cookie);
-                   HttpSession session = request.getSession();
-                   session.setAttribute("USER", result);
+                    //Sau  khi login compeled
+                    Cookie cookie = new Cookie(username, password);
+                    //Set cookie time exist
+                    cookie.setMaxAge(60 * 5);
+                    //add cookie into res obj
+                    response.addCookie(cookie);
+//                    <-- Using session -->
+                    HttpSession session = request.getSession();
+                    session.setAttribute("USER", result);
                 }// end user had existed
             }// end if user clicked Loign
         } catch (SQLException ex){

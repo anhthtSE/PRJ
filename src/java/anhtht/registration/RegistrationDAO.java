@@ -175,7 +175,7 @@ public class RegistrationDAO implements Serializable{
                 //2. Create SQL String
                 String url = "Update Registration "
                         + "Set Password = ?, isAdmin = ? "
-                        + "WHERE Username = ? ";
+                        + "Where Username = ? ";
                 //3. Create statement Obj
                 stm = con.prepareStatement(url);
                 stm.setString(1, password);

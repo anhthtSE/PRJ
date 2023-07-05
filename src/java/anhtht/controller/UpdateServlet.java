@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UpdateServlet", urlPatterns = {"/UpdateServlet"})
 public class UpdateServlet extends HttpServlet {
-    private final String ERROR_PAGE = "error.html";
+//    private final String ERROR_PAGE = "error.html";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,6 +51,7 @@ public class UpdateServlet extends HttpServlet {
         ServletContext context = this.getServletContext();
         //2. Get SITEMAPS
         Properties siteMaps =(Properties) context.getAttribute("SITEMAPS");
+        
         String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.ERROR_PAGE);
         String SearchValue = request.getParameter("lastSearchValue");
         
