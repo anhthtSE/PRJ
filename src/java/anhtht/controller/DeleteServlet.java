@@ -56,8 +56,7 @@ public class DeleteServlet extends HttpServlet {
             //2. Process result
             if (result) {
                 //2.1 call the Search function again using url rewriting tech
-                url = "DispatcherServlet"
-                        + "?btAction=Search"
+                url = "searchController?"
                         + "&txtSearchValue=" + searchValue;
                 //2.2 call the error if delete action is fail    
             }//end delete í success

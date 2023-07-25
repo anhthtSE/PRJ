@@ -14,7 +14,7 @@
     </head>
     <body>
         <h1>Create new account </h1>
-        <form action="DispatcherServlet" method="POST">
+        <form action="createNewAccountController" method="POST">
             <c:set var="errors" value="${requestScope.CREATE_ERRORS}"/>
             Username* <input type="text" name="txtUsername" 
                              value="${param.txtUsername}" /> (6 - 20 chars)<br/>

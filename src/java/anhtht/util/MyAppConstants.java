@@ -12,7 +12,7 @@ package anhtht.util;
 public class MyAppConstants {
     public class DispatchFeature{
         //Page
-        public static final String LOGIN_PAGE = "login";
+        public static final String LOGIN_PAGE = "";
         public static final String INVALID_PAGE = "invalidPage";
         public static final String SEARCH_PAGE = "searchPage";
         public static final String ERROR_PAGE = "errorPage";

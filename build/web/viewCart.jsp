@@ -24,7 +24,7 @@
                 <c:if test="${not empty item}">
                     <h1>Your cart include</h1>
                     
-                    <form action="DispatcherServlet" method="POST">
+                    <form action="removeItemFromCartController" method="POST">
                         <table border="1">
                             <thead>
                                 <tr>

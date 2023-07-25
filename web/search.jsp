@@ -21,10 +21,9 @@
         </font>
         <h1 style="color: blue">Search Page</h1>
         
-        <form action="DispatcherServlet">
+        <form action="searchController">
             Search <input type="text" name="txtSearchValue" value="${param.txtSearchValue}"><br/>
             <input type="submit" value="Search" name="btAction"/>
-            <input type="submit" value="Logout" name="btAction" />
         </form>
          <br/>
          
@@ -46,7 +45,7 @@
                      </thead>
                      <tbody>
                         <c:forEach var="dto" items="${result}" varStatus="counter">
-                        <form action="DispatcherServlet" method="GET">
+                        <form action="updateServletController" method="GET">
                              <tr>
                                 <td>
                                     ${counter.count}
@@ -68,8 +67,8 @@
                                            </c:if>/>
                                 </td>
                                 <td>
-                                    <c:url var="deleteLink" value="DispatcherServlet">
-                                        <c:param name="btAction" value="Delete"/>
+                                    <c:url var="deleteLink" value="deleteInSearchController">
+                                        <%--<c:param name="btAction" value="Delete"/>--%>
                                         <c:param name="pk" value="${dto.username}"/>
                                         <c:param name="LastSearchValue" value="${searchValue}"/>
                                     </c:url>
@@ -90,6 +89,9 @@
                  <h2>No record is matched!!!</h2>
              </c:if>
          </c:if>
+         <form action="logoutController">
+             <input type="submit" value="Logout" name="btAction" />
+         </form>
         <%--<%
 //            Login thành công khi cookie tồn tại
             Cookie[] cookies = request.getCookies();

@@ -62,7 +62,7 @@ public class RemoveItemsFromCartServlet extends HttpServlet {
             }//end session has existed
         } finally {
             //5. Call the View cart function again using URL rewriting
-            String urlRewriting = "DispatcherServlet?"
+            String urlRewriting = "cartController?"
                     + "btAction=View Your Cart";
             //SD sendRedict do ko muốn trùm
             response.sendRedirect(urlRewriting);

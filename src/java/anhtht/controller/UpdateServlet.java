@@ -64,8 +64,7 @@ public class UpdateServlet extends HttpServlet {
            
             //2. Process result
             if (result) {
-                url = "DispatcherServlet"
-                        + "?btAction=Search"
+                url = "searchController?"
                         + "&txtSearchValue=" + SearchValue;
             }
         } catch (NamingException e) {
@@ -74,8 +73,9 @@ public class UpdateServlet extends HttpServlet {
 //            e.printStackTrace();
             log("UpdateServlet _ Naming " + e.getMessage());
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+//            RequestDispatcher rd = request.getRequestDispatcher(url);
+//            rd.forward(request, response);
+              response.sendRedirect(url);
             
         }
         

@@ -28,8 +28,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "CreateNewAccountServlet", urlPatterns = {"/CreateNewAccountServlet"})
 public class CreateNewAccountServlet extends HttpServlet {
-    private final String LOGIN_PAGE = "login.html";
-    private final String ERROR_PAGE = "createNewAccount.jsp";
+//    private final String LOGIN_PAGE = "login.html";
+//    private final String ERROR_PAGE = "createNewAccount.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

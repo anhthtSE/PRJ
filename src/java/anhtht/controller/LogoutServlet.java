@@ -41,7 +41,6 @@ public class LogoutServlet extends HttpServlet {
         //2. Get SITEMAPS
         Properties siteMaps =(Properties) context.getAttribute("SITEMAPS");
         String url = siteMaps.getProperty(MyAppConstants.DispatchFeature.LOGIN_PAGE);
-        
         try{
             HttpSession session = request.getSession(false);
             //Check exist session

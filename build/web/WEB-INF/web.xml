@@ -4,26 +4,34 @@
         <param-name>SITEMAPS_PROPERTIES_FILE</param-name>
         <param-value>/WEB-INF/siteMaps.properties</param-value>
     </context-param>
+    <filter>
+        <filter-name>DispatcherFilter</filter-name>
+        <filter-class>anhtht.filter.DispatcherFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>DispatcherFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <listener>
         <description>ServletContextListener</description>
         <listener-class>anhtht.listener.MyServletListener</listener-class>
     </listener>
-    <servlet>
+<!--    <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>anhtht.controller.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    <welcome-file-list>
+<!--    <welcome-file-list>
         <welcome-file>DispatcherServlet</welcome-file>
-    </welcome-file-list>
+    </welcome-file-list>-->
     <resource-ref>
         <res-ref-name>DSSE1710</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>
